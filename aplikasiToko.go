@@ -63,7 +63,6 @@ func authSystem(A *tabAkun, n *int) bool {
 		fmt.Println(Purple + "│ 4. Keluar                  │" + Reset)
 		fmt.Println(Purple + "└────────────────────────────┘" + Reset)
 		fmt.Print("Pilih (1-4): ")
-
 		var pilih int
 		fmt.Scan(&pilih)
 		fmt.Println()
@@ -343,11 +342,10 @@ func tambah_data(A *tabBarang, n *int) {
 	fmt.Println(Purple + "========================================" + Reset)
 	fmt.Println(Purple + "         TAMBAH DATA Barang BARU        " + Reset)
 	fmt.Println(Purple + "========================================" + Reset)
-
 	if *n < NMAX {
 		fmt.Printf("%s%-22s%s", Purple, "Masukkan Kode Barang: ", Reset)
 		fmt.Scan(&A[*n].Kode)
-
+		
 		fmt.Printf("%s%-22s%s", Purple, "Masukkan Nama Barang: ", Reset)
 		fmt.Scan(&A[*n].Nama)
 
@@ -400,23 +398,20 @@ func menuCariBarang(A *tabBarang, n *int) {
 		fmt.Println(Purple + "│ 5. Kembali                             │" + Reset)
 		fmt.Println(Purple + "└────────────────────────────────────────┘" + Reset)
 		fmt.Print("Pilih (1-5): ")
-
 		var pilih int
 		fmt.Scan(&pilih)
-
+		
 		switch pilih {
 		case 1:
 			var kata string
 			fmt.Print("Masukkan sebagian nama barang: ")
 			fmt.Scan(&kata)
 			cari_NamaParsial(*A, *n, kata)
-
 		case 2:
 			var kode string
 			fmt.Print("Masukkan kode barang: ")
 			fmt.Scan(&kode)
 			cari_kodeBarang(*A, *n, kode)
-
 		case 3:
 			var minH, maxH int
 			fmt.Print("Harga minimum : ")
@@ -424,7 +419,6 @@ func menuCariBarang(A *tabBarang, n *int) {
 			fmt.Print("Harga maksimum: ")
 			fmt.Scan(&maxH)
 			cari_HargaRange(*A, *n, minH, maxH)
-
 		case 4:
 			var minS, maxS int
 			fmt.Print("Stok minimum : ")
@@ -432,10 +426,8 @@ func menuCariBarang(A *tabBarang, n *int) {
 			fmt.Print("Stok maksimum: ")
 			fmt.Scan(&maxS)
 			cari_StokRange(*A, *n, minS, maxS)
-
 		case 5:
 			return
-
 		default:
 			fmt.Println("Pilihan tidak valid.")
 		}
@@ -595,7 +587,7 @@ func edit_data(A *tabBarang, n *int, x string) {
 	}
 }
 
-// Procedure edit data.
+// Procedure hapus data.
 func hapus_data(A *tabBarang, n *int, x string) {
 	k := seqSearchKode(A, *n, x)
 	if k != -1 {
@@ -638,10 +630,11 @@ func menuPengurutan(A *tabBarang, n *int) {
 		fmt.Println(Purple + "│ 4. Harga ↑  (insertion)                │" + Reset)
 		fmt.Println(Purple + "│ 5. Total ↓ (selection)                 │" + Reset)
 		fmt.Println(Purple + "│ 6. Total ↑ (insertion)                 │" + Reset)
-		fmt.Println(Purple + "│ 7. Kembali                             │" + Reset)
+		fmt.Println(Purple + "│ 7. Kode ↑ (insertion)                  │" + Reset)
+		fmt.Println(Purple + "│ 8. Kode ↓ (selection)                  │" + Reset)
+		fmt.Println(Purple + "│ 9. Kembali                             │" + Reset)
 		fmt.Println(Purple + "└────────────────────────────────────────┘" + Reset)
-		fmt.Print("Pilih (1-7): ")
-
+		fmt.Print("Pilih (1-9): ")
 		var pilih int
 		fmt.Scan(&pilih)
 
@@ -649,30 +642,29 @@ func menuPengurutan(A *tabBarang, n *int) {
         case 1: // Stok menaik  (selection sort)
             pengurutan_StokMenaik(A, *n)
             cetak_data(*A, *n)
-
         case 2: // Stok menurun (insertion sort)
             pengurutan_StokMenurun(A, *n)
             cetak_data(*A, *n)
-
         case 3: // Harga menaik (selection sort)
             pengurutan_HargaMenaik(A, *n)
             cetak_data(*A, *n)
-
         case 4: // Harga menurun (insertion sort)
             pengurutan_HargaMenurun(A, *n)
             cetak_data(*A, *n)
-
         case 5: // Total (stok×harga) menaik
             pengurutan_TotalMenaik(A, *n)
             cetak_data(*A, *n)
-
         case 6: // Total (stok×harga) menurun
             pengurutan_TotalMenurun(A, *n)
             cetak_data(*A, *n)
-
-        case 7: // kembali ke menu utama
-            return
-
+		case 7: // kode menaik (selection sort)
+			pengurutan_KodeMenaik(A, *n)
+			cetak_data(*A, *n)
+		case 8: // kode menaik (selection sort)
+			pengurutan_KodeMenurun(A, *n)
+			cetak_data(*A, *n)
+		case 9: // kembali ke menu utama
+			return
         default:
             fmt.Println("Pilihan tidak valid.")
         }
@@ -775,6 +767,40 @@ func hitung_totStok(A tabBarang, n int) {
 	fmt.Println("Total nilai seluruh Stok Barang: Rp", total)
 	fmt.Println("==============================")
 }
+
+// Procedur mengurutkan ascending berdsarkan kode, menggunakan Algoritma selectionsort.
+func pengurutan_KodeMenaik(A *tabBarang, n int) {
+	for pass := 1; pass < n; pass++ {
+		idx := pass - 1
+		for i := pass; i < n; i++ {
+			if (*A)[i].Kode < (*A)[idx].Kode { // pilih kode terkecil
+				idx = i
+			}
+		}
+		temp := (*A)[idx]
+		(*A)[idx] = (*A)[pass-1]
+		(*A)[pass-1] = temp
+	}
+}
+
+// Procedur mengurutkan descending berdsarkan kode, menggunakan Algoritma insertionsort.
+func pengurutan_KodeMenurun(A *tabBarang, n int) {
+	for pass := 1; pass < n; pass++ {
+		temp := (*A)[pass]
+		idx := pass - 1
+		for idx >= 0 && (*A)[idx].Kode < temp.Kode {
+			(*A)[idx+1] = (*A)[idx]
+			idx--
+		}
+	(*A)[idx+1] = temp
+	}
+}
+
+
+
+
+
+
 
 // Procedure Menampilkan Statistik barang
 func statistik_Barang(A tabBarang, n int) {
