@@ -9,11 +9,11 @@ import (
 	"strings" // Manipulasi dan pencarian string.
 )
 
-const NMAX = 1000
+const NMAX = 1000 // bisa disesuaikan
 
 const (
-	Purple     = "\033[35m"
-	Reset      = "\033[0m"
+	Purple     = "\033[35m" // kode ANSI untuk warna ungu
+	Reset      = "\033[0m" // untuk mereset warna
 	fileAkun   = "akun.gob"
 	fileBarang = "Barang.gob"
 )
@@ -125,6 +125,39 @@ func authSystem(A *tabAkun, n *int) bool {
 			fmt.Scanln(); fmt.Scanln()
 
 		case 4: // KELUAR
+			
+			fmt.Println(":  .%@@%**+--:-=*#%%%%%%%%%%%%####%###****+-.        :.")
+			fmt.Println(".  .%%#*++=---. ..--=*#%%#######******++-.            .")
+			fmt.Println(":  .%%%@@@@@%#*+==-:--=+*###******+++=:       ..:::.   ")
+			fmt.Println("-. :@@@@@@@%%%##*++*++++******++++==-:.  ..:-=+++==--. ")
+			fmt.Println(":. :@@@%*=-::----=++++++++++++====--:....:-=====-----:.")
+			fmt.Println(":. :@@@#-..#@#.. .--===++++++==--::....:::.        ....")
+			fmt.Println(":.:-@@@#++%@@:.   **====+*+++==-::...... =#.:  .:   ...")
+			fmt.Println("=..=@@@@@@@@@%.  =##****####*++=-::.:-.:#@%.    -. ..:-")
+			fmt.Println("=--=@@@@@@@@@@%%%#****#%%@@%%#*+=---=+**##%#-:-==-:--=-")
+			fmt.Println("*--*@@@@@@@%##*+++***#%%@@@@%%#*+===+++===-====--:-===-")
+			fmt.Println("%*+#@@@@@@@%%##****#%%@@@@@@@@#*+===++++=----:::-==+==-")
+			fmt.Println("%**%@@@@@@@@%%##%%%%%@@@@@@@@@#*+====+++===---==++++==-")
+			fmt.Println("%%%@@@@@@@@@@@%%@%%%%%@@@@@@@%#*+=====++++++++++++++==-")
+			fmt.Println("%@@@@@@@@@@@@@@%%%%%%%@@@@@@@%#*+==-===+***++***+++==--")
+			fmt.Println("@@@@@@@@@@@@@%%%%####%@@@@@@@%#*++=---=++*****++++===--")
+			fmt.Println("@@@@@@@@@@%%%%%###**#@@@@@@@@@%#*+===-==+++**+++++==--+")
+			fmt.Println("@@@@@@%%%%%%%###***#@@@@@@@@@%%**+=++===+++++++++==--=@")
+			fmt.Println("@@@@@@@%%#####****#%%%%%%%%##**++======++++++++====-=%@")
+			fmt.Println("*+*@@@@@%#*******#%@%#*++***++==-....:=++++======--=%@@")
+			fmt.Println("%*@@@@@@@#******#%@@@@@@%#+=--:.:-==++++++=========%@@@")
+			fmt.Println("@@@@@@@@@@#***###%%@@@%%%%####**++=+++======--===+%@@@@")
+			fmt.Println("@@@@@@@@@@@@***++==*#%%@%%*++**=-----:::------==*@@@@@@")
+			fmt.Println("@@@@@@@@@@@@@#+=-::=+===+++*+=-::::::.    .:-=+%@@@@@@@")
+			fmt.Println("@@@@@@@@@@@@@@@*++++****+=--:.............:=*#%@@@@@@@@")
+			fmt.Println("@@@@@@@@@@@@=@@@@#+++=+*++====-::....---=*%@@@@@@@@@@@@")
+			fmt.Println("@@@@@@@@@@@+#@@@@@@#++==--::-::...::-=*%@@@@@@@@@@@@@@@")
+			fmt.Println("@@@@@@@%%@@@%@@@@@@@@%++===--:::.:-=#@@@@@@@@@@@@@@@@@@")
+			fmt.Println("@@@@@@@@@@@@@#*=@@@@@@@@@+#@@%==+@@@@@@@@@@@@@@@@@@@@@@")
+			fmt.Println("@%%%#**+*@@@@@%@@+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+			fmt.Println("+--:    :@@@%*@@-+#@@@@@@@@@@@@@@@@@@@@@%@@@@@@@@@@@@@@")
+			fmt.Println("-.       :==#@%#:#%@@@@@@@@@@@@@@@@@@@%%@@@@@@@@@@@@@@@")
+
 			end = true
 
 		default:
@@ -161,6 +194,12 @@ func findUser(A tabAkun, n int, u string) int {
 	}
 	return -1
 }
+
+
+
+
+
+
 
 // Procedure save akun menggunakan encoding/gob
 func saveAkun(path string, A tabAkun, n int) {
@@ -351,10 +390,16 @@ func tambah_data(A *tabBarang, n *int) {
 
 		fmt.Printf("%s%-22s%s", Purple, "Masukkan Stok       : ", Reset)
 		fmt.Scan(&A[*n].Stok)
-
+		if A[*n].Stok < 0{
+			A[*n].Stok  = A[*n].Stok  * 0
+		}
+		
 		fmt.Printf("%s%-22s%s", Purple, "Masukkan Harga      : ", Reset)
 		fmt.Scan(&A[*n].Harga)
-
+		if A[*n].Harga < 0{
+			A[*n].Harga  = A[*n].Harga  * 0
+		}
+		
 		(*n)++
 		fmt.Println(Purple + "----------------------------------------" + Reset)
 		fmt.Println("   → Data Barang berhasil ditambahkan!   ")
@@ -404,7 +449,7 @@ func menuCariBarang(A *tabBarang, n *int) {
 		switch pilih {
 		case 1:
 			var kata string
-			fmt.Print("Masukkan sebagian nama barang: ")
+			fmt.Print("Masukkan nama barang yang ingin dicari: ")
 			fmt.Scan(&kata)
 			cari_NamaParsial(*A, *n, kata)
 		case 2:
@@ -581,7 +626,13 @@ func edit_data(A *tabBarang, n *int, x string) {
 		fmt.Scan(&(*A)[k].Stok)
 		fmt.Printf("Masukkan Harga baru  : ")
 		fmt.Scan(&(*A)[k].Harga)
-
+		
+		if A[k].Harga < 0 {
+			A[k].Harga  = A[k].Harga * 0
+		}
+		if A[k].Stok < 0 {
+			A[k].Stok  = A[k].Stok * 0
+		}
 		saveBarang(fileBarang, *A, *n)
 		fmt.Println("✅  Data Barang berhasil diperbarui.")
 	}
